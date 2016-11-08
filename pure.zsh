@@ -248,7 +248,7 @@ prompt_pure_async_git_dirty() {
 		test -z "$(command git status --porcelain --ignore-submodules -unormal)"
 	fi
 
-	(( $? )) && echo " ${PURE_GIT_DIRTY:-×}"
+	(( $? )) && echo " %F{red}${PURE_GIT_DIRTY:-×}%f"
 }
 
 prompt_pure_async_git_fetch() {
