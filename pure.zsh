@@ -144,11 +144,11 @@ prompt_pure_preprompt_render() {
 	# git info
 	preprompt+="%F{$git_color}${vcs_info_msg_0_}${prompt_pure_git_dirty}%f"
 	# git pull/push arrows
-	preprompt+="%F{cyan}${prompt_pure_git_arrows}%f"
+	preprompt+="%F{yellow}${prompt_pure_git_arrows}%f"
 	# username and machine if applicable
 	preprompt+=$prompt_pure_username
 	# execution time
-	preprompt+="%F{yellow}${prompt_pure_cmd_exec_time}%f"
+	preprompt+="%F{cyan}${prompt_pure_cmd_exec_time}%f"
 
 	# NodeJS version
 	local rpreprompt="%F{green}⬢ ${prompt_pure_node_version}%f"
