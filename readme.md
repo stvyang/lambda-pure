@@ -161,5 +161,4 @@ $ zgen load marszall87/lambda-pure
 ## License
 
 MIT © [Michał Nykiel](https://github.com/marszall87)
-based on Pure by Sindre Sorhus
-# https://github.com/sindresorhus/pure
+based on [Pure by Sindre Sorhus](https://github.com/sindresorhus/pure)
