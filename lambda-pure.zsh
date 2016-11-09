@@ -1,6 +1,6 @@
-# Nure
+# λ Pure
 # by Michał Nykiel
-# https://github.com/marszall87/nure
+# https://github.com/marszall87/lambda-pure
 # MIT License
 #
 # based on Pure by Sindre Sorhus
@@ -273,7 +273,7 @@ prompt_pure_async_git_fetch() {
 	GIT_TERMINAL_PROMPT=0 command git -c gc.auto=0 fetch
 }
 
-prompt_pure_async_nvm() {
+prompt_pure_async_node() {
 	echo "$(PATH=$1 command node -v | cut -c2- )"
 }
 
@@ -301,6 +301,8 @@ prompt_pure_async_tasks() {
 		prompt_pure_current_working_tree="x${working_tree}"
 	fi
 
+	async_job "prompt_pure" prompt_pure_async_node "$PATH"
+
 	# only perform tasks inside git working tree
 	[[ -n $working_tree ]] || return
 
@@ -318,7 +320,6 @@ prompt_pure_async_tasks() {
 		async_job "prompt_pure" prompt_pure_async_git_dirty "${PURE_GIT_UNTRACKED_DIRTY:-1}" "${working_tree}"
 	fi
 
-	async_job "prompt_pure" prompt_pure_async_nvm "$PATH"
 }
 
 prompt_pure_async_callback() {
@@ -340,7 +341,7 @@ prompt_pure_async_callback() {
 			prompt_pure_check_git_arrows
 			prompt_pure_preprompt_render
 			;;
-		prompt_pure_async_nvm)
+		prompt_pure_async_node)
 			prompt_pure_node_version=$output
 			prompt_pure_preprompt_render
 			;;
@@ -388,7 +389,7 @@ prompt_pure_setup() {
 	[[ $UID -eq 0 ]] && prompt_pure_username=' %F{white}%n%f%F{242}@%m%f'
 
 	# prompt turns red if the previous command didn't exit with 0
-	PROMPT="%(?.%F{magenta}.%F{red})${PURE_PROMPT_SYMBOL:-❯}%f "
+	PROMPT="%(?.%F{yellow}.%F{red})${PURE_PROMPT_SYMBOL:-λ}%f "
 }
 
 prompt_pure_setup "$@"
