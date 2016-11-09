@@ -1,7 +1,10 @@
-# Pure
-# by Sindre Sorhus
-# https://github.com/sindresorhus/pure
+# Nure
+# by Michał Nykiel
+# https://github.com/marszall87/nure
 # MIT License
+#
+# based on Pure by Sindre Sorhus
+# https://github.com/sindresorhus/pure
 
 # For my own and others sanity
 # git:
@@ -147,6 +150,17 @@ prompt_pure_preprompt_render() {
 	# execution time
 	preprompt+="%F{yellow}${prompt_pure_cmd_exec_time}%f"
 
+	# NodeJS version
+	local rpreprompt="%F{green}⬢ ${prompt_pure_node_version}%f"
+
+	integer preprompt_left_length preprompt_right_length space_length
+	prompt_pure_string_length_to_var "${preprompt}" "preprompt_left_length"
+	prompt_pure_string_length_to_var "${rpreprompt}" "preprompt_right_length"
+	(( space_length = COLUMNS - preprompt_left_length - preprompt_right_length ))
+
+	preprompt+="$(printf ' %.0s' {1..${space_length}})"
+	preprompt+=$rpreprompt
+
 	# make sure prompt_pure_last_preprompt is a global array
 	typeset -g -a prompt_pure_last_preprompt
 
@@ -259,6 +273,10 @@ prompt_pure_async_git_fetch() {
 	GIT_TERMINAL_PROMPT=0 command git -c gc.auto=0 fetch
 }
 
+prompt_pure_async_nvm() {
+	echo "$(PATH=$1 command node -v | cut -c2- )"
+}
+
 prompt_pure_async_tasks() {
 	# initialize async worker
 	((!${prompt_pure_async_init:-0})) && {
@@ -299,6 +317,8 @@ prompt_pure_async_tasks() {
 		# check check if there is anything to pull
 		async_job "prompt_pure" prompt_pure_async_git_dirty "${PURE_GIT_UNTRACKED_DIRTY:-1}" "${working_tree}"
 	fi
+
+	async_job "prompt_pure" prompt_pure_async_nvm "$PATH"
 }
 
 prompt_pure_async_callback() {
@@ -318,6 +338,10 @@ prompt_pure_async_callback() {
 			;;
 		prompt_pure_async_git_fetch)
 			prompt_pure_check_git_arrows
+			prompt_pure_preprompt_render
+			;;
+		prompt_pure_async_nvm)
+			prompt_pure_node_version=$output
 			prompt_pure_preprompt_render
 			;;
 	esac
